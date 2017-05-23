@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="warn" name="assignment"
+               packages="org.apache.logging.log4j.core,com.assignment.birds">
+
+    <Appenders>
+
+        <Console name="console-log" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{dd MMM yyyy HH:mm:ss,SSS}] %p [%t] %m%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="birds-library-appender-info"
+                                 fileName="${env:assignment_home}/logs/birds-library-info.log"
+                                 filePattern="${env:assignment_home}/logs/birds-library-info.%d{yyyy-MM-dd}-%i.log"
+                                 immediateFlush="true">
+            <Filters>
+                <ThresholdFilter level="TRACE" onMatch="ACCEPT"
+                                 onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout>
+                <Pattern>[%d{dd MMM yyyy HH:mm:ss,SSS}] %p [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"
+                                           modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="birds-library-appender-error"
+                                 fileName="${env:assignment_home}/logs/birds-library-error.log"
+                                 filePattern="${env:assignment_home}/logs/birds-library-error.%d{yyyy-MM-dd}-%i.log"
+                                 immediateFlush="true">
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT"
+                                 onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout>
+                <Pattern>[%d{dd MMM yyyy HH:mm:ss,SSS}] %p [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"
+                                           modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.assignment.birds" level="info" additivity="false">
+            <AppenderRef ref="birds-library-appender-info" level="INFO"/>
+            <AppenderRef ref="birds-library-appender-error" level="ERROR"/>
+        </Logger>
+
+        <Root level="info" additivity="false">
+            <AppenderRef ref="console-log"/>
+        </Root>
+    </Loggers>
+
+</configuration>
